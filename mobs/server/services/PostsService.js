@@ -1,13 +1,22 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
+import { supportsService } from "./SupportsService";
 
 
 class PostsService{
 
-  // TODO get users tier level, only get posts of that or lower
-  async getProjectPosts(projectId){
-    const posts = await dbContext.Posts.find({projectId})
-    return posts
+  // TODO GET POSTS FOR ONLY THAT USERS SUPPORT LEVEL AND LOWER
+  async getProjectPosts(projectId, userId){
+    const supportTier = await supportsService.getAccountProjectSupport(userId, projectId)
+    if(!supportTier){
+      throw new BadRequest('You are not a supporter, cannot get posts')
+    }
+    const posts = await dbContext.Posts.find({projectId}).populate('tier')
+    // NOTE filters out posts you do not have access too
+    const filtered = posts.filter(p => {
+    return  p.tier.cost <= supportTier.tier.cost
+    })
+    return filtered
   }
   async create(body) {
     let post = await dbContext.Posts.create(body)
@@ -31,7 +40,8 @@ class PostsService{
     if(post.creatorId.toString() != userId){
       throw new BadRequest("you don't have permission to delete that post")
     }
-    return `deleted post ${post.name}`
+    post.remove()
+    return `deleted post ${post.title}`
   }
 
 }

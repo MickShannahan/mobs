@@ -11,13 +11,16 @@ export class ProjectsController extends BasController{
       this.router
       .get('', this.getAll)
       .get('/:id', this.getById)
-      .get('/:id/posts', this.getPosts)
+      // TODO get tiers by project
+      // TODO get supports by project
       .get('/:id/tiers', this.getTiers)
       .get('/:id/supports', this.getSupporters)
       .use(Auth0Provider.getAuthorizedUserInfo)
+      // TODO get posts by project
+      .get('/:id/posts', this.getPosts)
       .post('', this.create)
-      .put('', this.update)
-      .delete('', this.delete)
+      .put('/:id', this.update)
+      .delete('/:id', this.delete)
     }
 
     async getAll(req, res, next){
@@ -67,16 +70,18 @@ export class ProjectsController extends BasController{
       }
     }
 
+    // TODO GET PROJECT POSTS BUT RESTRICT ACCESS BASED ON SUPPORT TIER
     async getPosts(req, res, next){
       try {
-        // TODO restrict post access based on account tier level
-        const posts = await postsService.getProjectPosts(req.params.id)
+        const userInfo = req.userInfo
+        const posts = await postsService.getProjectPosts(req.params.id, userInfo.id)
         return res.send(posts)
       } catch (error) {
         next(error)
       }
     }
 
+    // TODO GET TIERS BY PROJECT
     async getTiers(req, res, next){
       try {
         const tiers = await tiersService.getProjectTiers(req.params.id)
@@ -86,6 +91,7 @@ export class ProjectsController extends BasController{
       }
     }
 
+    // TODO GET ACCOUNT/TIER DETAILS OF PEOPLE SUPPORTING THIS PROJECT
     async getSupporters(req, res, next){
       try {
         const supports = await supportsService.getProjectSupporters(req.params.id)

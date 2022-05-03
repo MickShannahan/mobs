@@ -10,8 +10,8 @@ export class PostsController extends BasController{
       // .get('/:id', this.getById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
-      .put('', this.update)
-      .delete('', this.delete)
+      .put('/:id', this.update)
+      .delete('/:id', this.delete)
     }
 
     // async getAll(req, res, next){

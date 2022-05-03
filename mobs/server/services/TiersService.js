@@ -7,6 +7,7 @@ class TiersService{
     let tiers = await dbContext.Tiers.find({projectId})
     return tiers
   }
+
   async create(body) {
     let tier = await dbContext.Tiers.create(body)
     await tier.populate('creator', 'name picture')
@@ -23,8 +24,12 @@ class TiersService{
     return update
   }
 
-  // TODO do not allow a user to delete a tier if there are supporters
+  // TODO DO NOT ALLOW A TIER DELETE IF THERE ARE CURRENT SUPPORTERS
   async delete(id, userId) {
+    const count =  await dbContext.Supports.count({tierId: id})
+    if(count > 0 ){
+      throw new BadRequest("cannot delete tier that has active supporters")
+    }
     const tier = await dbContext.Tiers.findById(id)
     if(tier.creatorId.toString() != userId){
       throw new BadRequest("you don't have permission to delete that tier")

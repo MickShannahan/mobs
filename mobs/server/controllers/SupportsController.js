@@ -6,35 +6,19 @@ export class SupportsController extends BasController{
     constructor(){
       super('api/supports')
       this.router
-      // .get('', this.getAll)
-      // .get('/:id', this.getById)
+
       .use(Auth0Provider.getAuthorizedUserInfo)
+      // TODO CREATE SUPPORT
       .post('', this.create)
-      .put('', this.update)
-      .delete('', this.delete)
+      // TODO EDIT TIER OF SUPPORT
+      .put('/:id', this.update)
+      .delete('/:id', this.delete)
     }
 
-    // async getAll(req, res, next){
-    //   try {
-    //     const supports = await supportsService.getAll(req.query)
-    //     return res.send(supports)
-    //   } catch (error) {
-    //     next(error)
-    //   }
-    // }
 
-    // async getById(req, res, next){
-    //   try {
-    //     const support = await supportsService.getById(req.params.id)
-    //     return res.send(support)
-    //   } catch (error) {
-    //     next(error)
-    //   }
-    // }
-
+    // TODO CREATE SUPPORT BUT ONLY ALLOW ONE
     async create(req, res, next){
       try {
-        // TODO only allow a person to create one
         req.body.accountId = req.userInfo.id
         const support = await supportsService.create(req.body)
         return res.send(support)
@@ -43,7 +27,7 @@ export class SupportsController extends BasController{
       }
     }
 
-    // TODO change tier level
+    // TODO CHANGE TIER LEVEL OF SUPPORT
     async update(req, res, next){
       try {
         req.body.accountId = req.userInfo.id
