@@ -6,9 +6,7 @@
     <router-view />
   </main>
   <footer>
-    <div class="bg-dark text-light text-center p-4">
-      Made with 💖 by CodeWorks
-    </div>
+    <div class="bg-transparent text-light text-center p-4"></div>
   </footer>
 </template>
 
@@ -26,5 +24,9 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
-
+#app {
+  background-color: $light;
+  background-image: url("./assets/img/MobsBg.png");
+  background-repeat: no-repeat;
+}
 </style>

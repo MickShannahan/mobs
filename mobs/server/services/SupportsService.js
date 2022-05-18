@@ -12,7 +12,7 @@ class SupportsService{
 
   // TODO GET PROJECTS/TIER INFO A PERSON IS SUPPORTING
   async getMySupports(accountId){
-    const supports = await dbContext.Supports.find({accountId}).populate('project', 'name').populate('tier')
+    const supports = await dbContext.Supports.find({accountId}).populate('project').populate('tier')
     return supports
   }
 
@@ -25,8 +25,11 @@ class SupportsService{
       throw new BadRequest('you are already supporting this project')
     }
     let support = await dbContext.Supports.create(body)
+    await support.populate('project')
+    await support.populate('tier')
     return support
   }
+
   // TODO A FIND ONE TO FIND ONE BY ACCOUNT AND PROJECT
   async getAccountProjectSupport(accountId, projectId){
     let tier = await dbContext.Supports.findOne({accountId, projectId}).populate('tier')

@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
+        <h2>Mobs</h2>
       </div>
     </router-link>
     <button
@@ -16,17 +16,10 @@
     >
       <span class="navbar-toggler-icon" />
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
-        <li>
-          <router-link
-            :to="{ name: 'About' }"
-            class="btn text-success lighten-30 selectable text-uppercase"
-          >
-            About
-          </router-link>
-        </li>
-      </ul>
+    <div
+      class="collapse navbar-collapse d-flex justify-content-end"
+      id="navbarText"
+    >
       <!-- LOGIN COMPONENT HERE -->
       <Login />
     </div>
@@ -41,7 +34,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../assets/scss/main.scss";
+.navbar {
+  h2 {
+    @include baloo(800);
+  }
+}
+
 a:hover {
   text-decoration: none;
 }

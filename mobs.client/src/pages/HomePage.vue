@@ -1,36 +1,71 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="home container">
+    <div class="row hero-banner rounded mt-3">
+      <div class="col-12 text-center">
+        <h5>
+          “It is literally true that you can succeed best and quickest by
+          helping others to succeed.”
+        </h5>
+        <p>-Napoleon Hill</p>
+      </div>
+    </div>
+    <div class="row ps-3 baloo">find what inspires you</div>
+    <!-- TODO add projects -->
+
+    <div class="row projects-row">
+      <div v-for="p in projects" :key="p.id" class="col-12">
+        <Project :project="p" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted } from '@vue/runtime-core'
+import { projectsService } from '../services/ProjectsService'
+import Pop from '../utils/Pop'
+import { AppState } from '../AppState'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    onMounted(async () => {
+      try {
+        await projectsService.getProjects()
+      } catch (error) {
+        Pop.error(error)
+      }
+    })
+    return {
+      projects: computed(() => AppState.projects)
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.home{
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-  .home-card{
-    width: 50vw;
-    > img{
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
+@import "../assets/scss/main.scss";
+.home {
+}
+
+.hero-banner {
+  position: relative;
+  @include baloo(600);
+  @include bigShadow($warning);
+  background: $warning;
+  padding: 3em 5em;
+  margin-bottom: 4.5em;
+  p {
+    color: darken($warning, 30);
+    position: absolute;
+    bottom: -0.5em;
+    right: 1.5em;
   }
+}
+
+.projects-row {
+  background: lighten($warning, 35);
+  @include bigShadow($dark, 0.8);
+  padding: 1em;
+  border-radius: 8px;
 }
 </style>

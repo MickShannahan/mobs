@@ -1,0 +1,116 @@
+<template>
+  <div class="supporters">
+    <!-- Button -->
+    <button data-bs-toggle="offcanvas" data-bs-target="#supporters-canvas">
+      see supporters
+    </button>
+    <!-- Offcanvas  copy first from BS5 DOCS (https://getbootstrap.com/docs/5.0/components/offcanvas/) change offcanvas-start to offcanvas-end -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="supporters-canvas"
+      aria-labelledby="offcanvasLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasLabel">Supporters</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <SupporterTier v-for="t in tiers" :key="t.id" :tier="t" />
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script>
+import { AppState } from '../AppState';
+import { computed, reactive, onMounted } from 'vue';
+import Pop from '../utils/Pop';
+import { supportsService } from '../services/SupportsService';
+import { useRoute } from 'vue-router';
+export default {
+  setup() {
+    const route = useRoute()
+    onMounted(async () => {
+      try {
+        await supportsService.getProjectSupporters(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+      }
+    })
+    return {
+      tiers: computed(() => AppState.tiers)
+    }
+  }
+};
+</script>
+
+
+<style lang="scss" scoped>
+@import "../assets/scss/main.scss";
+
+.supporters {
+  margin: auto 0em 1em auto;
+
+  & > button {
+    border: 0;
+    border-radius: 8px;
+    padding: 1em 3em;
+    background: $success;
+    color: lighten($light, 10);
+    transition: all 0.1s ease;
+    @include bigShadow($success, 0.5);
+    // Hover effect
+    &:hover {
+      cursor: pointer;
+      &:after {
+        opacity: 0.1;
+      }
+    }
+    &:after {
+      border-radius: inherit;
+      bottom: 0;
+      color: inherit;
+      content: "";
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
+      background-color: currentColor;
+    }
+  }
+
+  .offcanvas {
+    background: lighten($light, 7);
+    background-image: url("../assets/img/MobsBlob.png");
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: top right;
+    width: 28em;
+    padding-left: 1em;
+    padding-right: 1em;
+    &-header {
+      direction: rtl;
+      button {
+        background: transparent;
+        color: $dark !important;
+      }
+    }
+    &-body {
+      background: lighten($light, 20);
+      color: $dark;
+      border-radius: 6px;
+      box-shadow: 0px 2px 4px rgba(21, 21, 21, 0.247);
+    }
+  }
+}
+</style>
