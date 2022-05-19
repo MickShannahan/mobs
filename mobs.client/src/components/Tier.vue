@@ -123,7 +123,10 @@ export default {
     background: $success;
     border: 0;
     color: lighten($light, 10);
-    @include selectable($danger,1, 0, 0, .8 );
+    transition: background .1s ease-in;
+    &:hover{
+      background: $danger;
+    }
   }
 }
 </style>

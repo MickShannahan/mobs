@@ -26,7 +26,7 @@
         </div>
       </div>
       <div
-        class="dropdown-menu p-0 list-group w-100"
+        class="dropdown-menu list-group"
         aria-labelledby="authDropdown"
       >
         <router-link :to="{ name: 'Account' }">
@@ -73,13 +73,21 @@ export default {
   margin-right: calc(2vw + 1em);
 }
 .dropdown-menu {
+  position: absolute;
+  top: 0%;
+  left: -1em;
+  padding: 0 0px;
   user-select: none;
-  display: block;
-  transform: scaleY(0) translateY(-100%);
-  transition: all 0.15s linear;
+  transform: scaleY(0);
+  transition: all 0.1s ease;
+  opacity: 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .dropdown-menu.show {
-  transform: scaleY(1) translate(0%);
+  transform: scaleY(1);
+  top: 100%;
+  opacity: 1;
 }
 .hoverable {
   cursor: pointer;
