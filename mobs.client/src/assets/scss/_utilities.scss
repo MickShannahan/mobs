@@ -206,7 +206,7 @@ $value in $colors {
   }
 }
 
-@mixin selectable($color: inherit, $scale: 1, $moveY: 0, $moveX :0, $intensity: 0.1) {
+@mixin selectable($color: inherit, $scale: 1, $moveY: 0, $moveX :0, $intensity: 0.1, $mode: 'normal') {
   position: relative;
   transition: all .1s cubic-bezier(0.4, 0, 0.6, 1);
 
@@ -232,6 +232,7 @@ $value in $colors {
     top: 0;
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
     background-color: currentColor;
+    mix-blend-mode: $mode;
   }
 }
 

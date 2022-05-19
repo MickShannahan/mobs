@@ -8,7 +8,9 @@
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi
       laborum minima maxime nobis reiciendis recusandae consequuntur.
     </p>
-    <button v-if="tier.creatorId == account.id" @click.stop="deleteTier"><i class="mdi mdi-close"></i></button>
+    <button v-if="tier.creatorId == account.id" @click.stop="deleteTier">
+      <i class="mdi mdi-close"></i>
+    </button>
   </div>
 </template>
 
@@ -42,9 +44,9 @@ export default {
           Pop.error(error)
         }
       },
-      async deleteTier(){
+      async deleteTier() {
         try {
-          if(await Pop.confirm()){
+          if (await Pop.confirm()) {
             await tiersService.deleteTier(props.tier.id)
           }
         } catch (error) {
@@ -112,19 +114,19 @@ export default {
     text-align: left;
   }
   // delete button
-  button{
+  button {
     height: 30px;
     width: 30px;
     position: absolute !important;
     bottom: -15px;
-    left: calc((50% -15px));
+    left: calc((50% -7.5px));
     text-align: center;
     border-radius: 50em;
     background: $success;
     border: 0;
     color: lighten($light, 10);
-    transition: background .1s ease-in;
-    &:hover{
+    transition: background 0.1s ease-in;
+    &:hover {
       background: $danger;
     }
   }
