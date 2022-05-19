@@ -8,7 +8,7 @@
       Login
     </button>
 
-    <div class="dropdown my-2 my-lg-0" v-else>
+    <div class="dropdown my-2 my-lg-0 me-3" v-else>
       <div
         class="dropdown-toggle selectable"
         data-bs-toggle="dropdown"
@@ -69,14 +69,17 @@ export default {
 
 
 <style lang="scss" scoped>
+.dropdown{
+  margin-right: calc(2vw + 1em);
+}
 .dropdown-menu {
   user-select: none;
   display: block;
-  transform: scale(0);
+  transform: scaleY(0) translateY(-100%);
   transition: all 0.15s linear;
 }
 .dropdown-menu.show {
-  transform: scale(1);
+  transform: scaleY(1) translate(0%);
 }
 .hoverable {
   cursor: pointer;

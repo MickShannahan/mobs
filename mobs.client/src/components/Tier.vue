@@ -8,6 +8,7 @@
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi
       laborum minima maxime nobis reiciendis recusandae consequuntur.
     </p>
+    <button v-if="tier.creatorId == account.id" @click.stop="deleteTier"><i class="mdi mdi-close"></i></button>
   </div>
 </template>
 
@@ -18,11 +19,13 @@ import { computed, reactive, onMounted } from 'vue';
 import { supportsService } from '../services/SupportsService';
 import Pop from '../utils/Pop';
 import { useRoute } from 'vue-router';
+import { tiersService } from "../services/TiersService";
 export default {
   props: { tier: { type: Object, required: true } },
   setup(props) {
     const route = useRoute()
     return {
+      account: computed(() => AppState.account),
       hasTier: computed(() => AppState.supportedProjects.find(p => p.tierId == props.tier.id)),
       async supportProject() {
         try {
@@ -34,6 +37,15 @@ export default {
             }
             await supportsService.create(support)
             Pop.toast('Project supported!', 'success')
+          }
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+      async deleteTier(){
+        try {
+          if(await Pop.confirm()){
+            await tiersService.deleteTier(props.tier.id)
           }
         } catch (error) {
           Pop.error(error)
@@ -76,10 +88,12 @@ export default {
   flex: 1 0 auto;
   max-width: 45%;
   @include bigShadow($success, 0.5);
+  @include selectable($light, 1, -2px);
   transition: all 0.1s ease;
   div {
     display: flex;
     justify-content: space-between;
+    // cost
     h5 {
       font-size: 16px;
       font-weight: 500;
@@ -88,6 +102,7 @@ export default {
       color: $success;
       padding: 0.25em 1em;
     }
+    // name
     h6 {
       font-size: 17px;
       @include baloo(700);
@@ -96,27 +111,19 @@ export default {
   p {
     text-align: left;
   }
-  &:hover {
-    transform: translateY(-2px);
-    outline: 1px solid $success;
-    cursor: pointer;
-    &:after {
-      opacity: 0.1;
-    }
-  }
-  &:after {
-    border-radius: inherit;
-    bottom: 0;
-    color: inherit;
-    content: "";
-    left: 0;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
-    background-color: currentColor;
+  // delete button
+  button{
+    height: 30px;
+    width: 30px;
+    position: absolute !important;
+    bottom: -15px;
+    left: calc((50% -15px));
+    text-align: center;
+    border-radius: 50em;
+    background: $success;
+    border: 0;
+    color: lighten($light, 10);
+    @include selectable($danger,1, 0, 0, .8 );
   }
 }
 </style>

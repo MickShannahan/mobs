@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
+import { projectsService } from "./ProjectsService";
 import { supportsService } from "./SupportsService";
 
 
@@ -7,12 +8,18 @@ class PostsService{
 
   // TODO GET POSTS FOR ONLY THAT USERS SUPPORT LEVEL AND LOWER
   async getProjectPosts(projectId, userId){
-    const supportTier = await supportsService.getAccountProjectSupport(userId, projectId)
-    if(!supportTier){
-      throw new BadRequest('You are not a supporter, cannot get posts')
-    }
+    const project = await projectsService.getById(projectId)
     const posts = await dbContext.Posts.find({projectId}).populate('tier')
-    // NOTE filters out posts you do not have access too
+    // if creator return all posts
+    if(project.creatorId.toString() == userId){
+      return posts
+    }
+    const supportTier = await supportsService.getAccountProjectSupport(userId, projectId)
+    // if not supporter return nothing
+    if(!supportTier){
+      return []
+    }
+    // if supporter return only posts you have access to
     const filtered = posts.filter(p => {
     return  p.tier.cost <= supportTier.tier.cost
     })

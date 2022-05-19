@@ -3,8 +3,14 @@ import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class ProjectsService{
+  async createProject(body){
+    const res = await api.post('api/projects', body)
+    logger.log('created project', res.data)
+    AppState.accountProjects.push(res.data)
+  }
+
   async getProjects(query = ''){
-    const res = await api.get('api/projects')
+    const res = await api.get('api/projects' + query)
     logger.log('[get projects]', res.data)
     AppState.projects = res.data
   }

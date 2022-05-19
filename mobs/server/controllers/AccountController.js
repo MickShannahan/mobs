@@ -1,5 +1,6 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { accountService } from '../services/AccountService'
+import { projectsService } from "../services/ProjectsService"
 import { supportsService } from '../services/SupportsService'
 import BaseController from '../utils/BaseController'
 
@@ -9,6 +10,7 @@ export class AccountController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getUserAccount)
+      .get('/projects', this.getProjects)
       .get('/supports', this.getSupportingProjects)
   }
 
@@ -16,6 +18,15 @@ export class AccountController extends BaseController {
     try {
       const account = await accountService.getAccount(req.userInfo)
       res.send(account)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getProjects(req, res, next){
+    try {
+      const projects = await projectsService.getAll({creatorId: req.userInfo.id})
+      return res.send(projects)
     } catch (error) {
       next(error)
     }

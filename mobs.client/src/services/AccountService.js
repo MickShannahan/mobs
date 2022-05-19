@@ -13,6 +13,12 @@ class AccountService {
     }
   }
 
+  async getMyProjects(){
+    const res = await api.get('account/projects')
+    logger.log('account projects', res.data)
+    AppState.accountProjects = res.data
+  }
+
   async getSupports(){
     try {
         const res = await api.get('/account/supports')

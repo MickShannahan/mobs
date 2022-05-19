@@ -29,8 +29,10 @@ export default {
       account: computed(() => AppState.account),
       async deletePost() {
         try {
-          await postsService.deletePost(props.post.id)
+          if(await Pop.confirm()){
+            await postsService.deletePost(props.post.id)
           Pop.toast('Post Deleted', 'success')
+          }
         } catch (error) {
           Pop.error(error)
         }

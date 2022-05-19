@@ -133,10 +133,12 @@ export default {
       &:nth-child(1) {
         margin-left: auto;
         background: transparent;
+        @include selectable($danger);
       }
       // create button
       &:nth-child(2) {
         @include bigShadow($secondary, 0.5);
+        @include selectable();
         font-weight: 600;
         background: $secondary;
         color: $white;

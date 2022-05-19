@@ -11,29 +11,27 @@
       <h5>Your Projects</h5>
       <div id="projects-container">
         <div v-for="p in projects" :key="p.id">
+          <router-link :to="{name: 'ProjectDetails', params:{id: p.id}}">
           {{ p.name }}
+          </router-link>
         </div>
       </div>
-      <button><i class="mdi mdi-plus"></i></button>
+      <button
+      data-bs-toggle="modal"
+      data-bs-target="#create-project"
+      ><i class="mdi mdi-plus"></i></button>
     </section>
     <section id="supported-projects">
       <h5>Projects you support</h5>
       <div id="supports-container">
-        <!-- FIXME does it need to be a component? -->
-        <div v-for="s in supportedProjects" :key="s.id">
-          <img :src="s.project.img" alt="" />
-          <p>{{ s.project.name }}</p>
-          <p>{{ s.createdAt }}</p>
-          <p>{{ s.tier.name }}</p>
-          <p>${{ s.tier.cost }}</p>
-          <i
-            class="mdi mdi-delete-forever-outline"
-            @click="deleteSupport(s.id)"
-          ></i>
-        </div>
+        <SupportedProject v-for="s in supportedProjects" :key="s.id" :support="s" />
       </div>
     </section>
   </div>
+  <Modal id="create-project">
+    <template #header>Create a Project</template>
+    <template #body><CreateProject/></template>
+  </Modal>
 </template>
 
 <script>
@@ -42,26 +40,19 @@ import { AppState } from '../AppState'
 import { projectsService } from '../services/ProjectsService'
 import { supportsService } from '../services/SupportsService'
 import Pop from '../utils/Pop'
+import { accountService } from "../services/AccountService"
 export default {
   name: 'Account',
   setup() {
     onMounted(async () => {
-      await projectsService.getProjects('?creatorId=' + AppState.account.id)
+      await accountService.getMyProjects()
     })
     return {
       account: computed(() => AppState.account),
-      projects: computed(() => AppState.projects),
+      projects: computed(() => AppState.accountProjects),
       // reuse from auth service
       supportedProjects: computed(() => AppState.supportedProjects),
-      async deleteSupport(id) {
-        try {
-          if (await Pop.confirm('Cancel Support?', 'are you sure you want to stop supporting this project?', 'info', 'yes cancel it')) {
-            await supportsService.deleteSupport(id)
-          }
-        } catch (error) {
-          Pop.error(error)
-        }
-      }
+
     }
   }
 }
@@ -127,13 +118,15 @@ export default {
     // project
     div {
       background: $secondary;
-      color: lighten($light, 20);
       padding: 1em 2.5em;
       border-radius: 12px;
       margin: 1em;
       @include bigShadow($secondary, 0.5);
       transition: all 0.1s ease;
       @include selectable();
+      a{
+        color: lighten($light, 20);
+      }
     }
   }
   // add project button
@@ -175,66 +168,7 @@ export default {
     flex-direction: column;
     padding: 1em;
     // Support item
-    div {
-      background: lighten($light, 40);
-      border-radius: inherit;
-      margin: 0.6em 0;
-      border-radius: 8px;
-      @include bigShadow($dark, 0.9);
-      img {
-        float: left;
-        height: 7.5em;
-        width: 11em;
-        margin-right: 0.5em;
-        object-fit: cover;
-        border-radius: inherit;
-      }
-      // project name
-      p:nth-child(2) {
-        margin-top: 1.7em;
-        margin-bottom: 0.4em;
-        font-weight: 700;
-        display: block;
-      }
-      // time stamp
-      p:nth-child(3) {
-        color: lighten($dark, 30);
-        display: inline-block;
-        width: 25%;
-      }
-      // tier name
-      p:nth-child(4) {
-        font-weight: 500;
-        color: $info;
-        display: inline-block;
-        width: 30%;
-        transform: translateY(-0.6em);
-      }
-      // cost
-      p:nth-child(5) {
-        color: $primary;
-        @include baloo(700);
-        display: inline-block;
-        width: 20%;
-        transform: translateY(-0.6em);
-      }
-      i {
-      }
-      // icon
-      .mdi.mdi-delete-forever-outline {
-        &::before {
-          font-size: 20px;
-          width: auto;
-          transform: translateY(-0.6rem);
-          transition: all 0.1s ease;
-        }
-        &:hover::before {
-          cursor: pointer;
-          color: $danger;
-          transform: translateY(-0.55em) scale(1.5);
-        }
-      }
-    }
+
   }
 }
 </style>

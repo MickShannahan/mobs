@@ -17,22 +17,32 @@
       <div class="tiers">
         <Tier v-for="t in tiers" :key="t.id" :tier="t" />
       </div>
+      <button v-if="project.creatorId == account.id"
+      data-bs-toggle="modal"
+      data-bs-target="#create-tier">
+      <i class="mdi mdi-plus"></i>
+      </button>
+      <Modal id="create-tier">
+        <template #header>Create Tier</template>
+        <template #body><CreateTier/> </template>
+      </Modal>
     </section>
     <!-- POSTS CONTAINER -->
     <section id="posts-container">
-      <div v-if="project.creatorId == account.id" class="tier-filter">
-        <div>filter posts by:</div>
-        <button v-for="t in tiers" :key="t.id">{{ t.name }}</button>
-      </div>
       <!-- CREATE POST -->
-      <CreatePost v-else />
-      <div v-if="isSupporter" id="posts">
-        <Post v-for="p in posts" :key="p.id" :post="p" />
-        <div v-if="posts.length <= 0">This Project has no posts yet</div>
+      <CreatePost v-if="project.creatorId == account.id" />
+      <div  class="tier-filter">
+        <div>filter posts by:</div>
+        <button @click="filterTier = ''">all</button>
+        <button v-for="t in tiers" :key="t.id" @click="filterTier = t.id">{{ t.name }}</button>
       </div>
-      <div v-else>
-        please support this creator to see their posts
-        <i class="mdi mdi-lock"></i>
+      <div  id="posts">
+        <Post v-for="p in posts" :key="p.id" :post="p" />
+        <div v-if="posts.length <= 0 ">No Posts to show</div>
+        <div v-if="!isSupporter && project.creatorId != account.id">
+          please support this creator to see their posts
+          <i class="mdi mdi-lock"></i>
+        </div>
       </div>
     </section>
   </div>
@@ -40,7 +50,7 @@
 
 
 <script>
-import { computed, onMounted, watchEffect } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { AppState } from '../AppState';
 import { postsService } from '../services/PostsService';
@@ -48,9 +58,12 @@ import { projectsService } from '../services/ProjectsService';
 import { tiersService } from '../services/TiersService';
 import { logger } from '../utils/Logger';
 import Pop from '../utils/Pop';
+import Tier from "../components/Tier.vue";
 export default {
+  components: { Tier },
   setup() {
     const route = useRoute()
+    const filterTier = ref('')
     watchEffect(async () => {
       try {
         if (route.name == 'ProjectDetails') {
@@ -65,9 +78,11 @@ export default {
       }
     })
     return {
+      filterTier,
       project: computed(() => AppState.activeProject),
-      tiers: computed(() => AppState.tiers),
-      posts: computed(() => AppState.posts),
+      tiers: computed(() => AppState.tiers.sort((a,b) => a.cost - b.cost)),
+      // NOTE filters by tier id only IF there is a filter value, if there is not it returns all
+      posts: computed(() => AppState.posts.filter(p => filterTier.value ? p.tierId == filterTier.value : true)),
       isSupporter: computed(() => AppState.supportedProjects.find(p => AppState.activeProject.id == p.projectId)),
       account: computed(() => AppState.account),
       formatDate(rawDate) {
@@ -119,6 +134,7 @@ export default {
     }
   }
   #tiers-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -143,6 +159,19 @@ export default {
       flex-wrap: wrap;
       justify-content: space-around;
       width: 100%;
+    }
+    button{
+      height: 45px;
+      width: 45px;
+      position: absolute !important;
+      top: 1em;
+      right: 1em;
+      border-radius: 50em;
+      border: 0;
+      background: $success;
+      color: $light;
+      @include bigShadow($success, .5);
+      @include selectable();
     }
   }
   #posts-container {

@@ -8,7 +8,9 @@ class SupportsService{
   async create(newSupport){
     const res = await api.post('api/supports', newSupport)
     logger.log('create support', res.data)
+    // This part is tricky what to do here?
     AppState.supportedProjects.push(res.data)
+    this.getProjectSupporters(newSupport.projectId)
   }
 
   async getProjectSupporters(projectId){

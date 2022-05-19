@@ -66,27 +66,7 @@ export default {
     color: lighten($light, 10);
     transition: all 0.1s ease;
     @include bigShadow($success, 0.5);
-    // Hover effect
-    &:hover {
-      cursor: pointer;
-      &:after {
-        opacity: 0.1;
-      }
-    }
-    &:after {
-      border-radius: inherit;
-      bottom: 0;
-      color: inherit;
-      content: "";
-      left: 0;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transition: opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
-      background-color: currentColor;
-    }
+    @include selectable();
   }
 
   .offcanvas {
