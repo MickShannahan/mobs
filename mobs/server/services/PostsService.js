@@ -12,18 +12,18 @@ class PostsService{
     const posts = await dbContext.Posts.find({projectId}).sort({createdAt: -1}).populate('tier')
     // if creator return all posts
     if(project.creatorId.toString() == userId){
-      return posts
+      return {posts, locked: 0}
     }
     const supportTier = await supportsService.getAccountProjectSupport(userId, projectId)
     // if not supporter return nothing
     if(!supportTier){
-      return []
+      return {posts: [], locked: posts.length}
     }
     // if supporter return only posts you have access to
     const filtered = posts.filter(p => {
     return  p.tier.cost <= supportTier.tier.cost
     })
-    return filtered
+    return {posts: filtered, locked: posts.length - filtered.length}
   }
 
   async create(body) {

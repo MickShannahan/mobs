@@ -93,6 +93,9 @@ export default {
     background: lighten($warning, 50);
     box-shadow: inset 0px 2px 4px rgba(26, 26, 26, 0.26);
   }
+  textarea {
+    min-height: 8rem;
+  }
   button {
     display: inline-block;
     position: relative;

@@ -45,7 +45,7 @@ export default {
               Pop.toast('Project supported!', 'success')
             }
           } else {
-            if (await Pop.confirm(`Update your support level from ${support.tier.name} : $${support.tier.cost}\n <i class="mdi mdi-arrow-down"></i> \n ${props.tier.name} : $${props.tier.cost}`, '', 'question', 'yes update!')) {
+            if (await Pop.confirm(`${support.tier.name} : $${support.tier.cost}\n <i class="mdi mdi-arrow-down"></i> \n ${props.tier.name} : $${props.tier.cost}`, 'Update Support Tier?', 'question', 'yes update!')) {
               support.tierId = props.tier.id
               await supportsService.update(support)
               Pop.toast('Support updated!', 'success')
@@ -144,8 +144,6 @@ export default {
     border: 0;
     color: lighten($light, 10);
     transition: all 0.1s ease-in;
-    transform: translateY(-30px);
-    opacity: 0;
     &:hover {
       background: $danger;
     }

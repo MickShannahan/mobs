@@ -18,7 +18,7 @@
       </div>
       <Supporters />
       <Modal id="edit-project">
-        <template #header>edit a Project</template>
+        <template #header>Edit {{ project.name }}</template>
         <template #body><ProjectForm :project="project" /></template>
       </Modal>
     </section>
@@ -52,6 +52,7 @@
         </button>
       </div>
       <div id="posts">
+        <p v-if="lockedPosts">Locked Posts: {{ lockedPosts }}</p>
         <Post v-for="p in posts" :key="p.id" :post="p" />
         <div v-if="posts.length <= 0">No Posts to show</div>
         <div v-if="!isSupporter && project.creatorId != account.id">
@@ -98,6 +99,7 @@ export default {
       tiers: computed(() => AppState.tiers.sort((a, b) => a.cost - b.cost)),
       // NOTE filters by tier id only IF there is a filter value, if there is not it returns all
       posts: computed(() => AppState.posts.filter(p => filterTier.value ? p.tierId == filterTier.value : true)),
+      lockedPosts: computed(() => AppState.lockedPosts),
       isSupporter: computed(() => AppState.supportedProjects.find(p => AppState.activeProject.id == p.projectId)),
       account: computed(() => AppState.account),
       formatDate(rawDate) {

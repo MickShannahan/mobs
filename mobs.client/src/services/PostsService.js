@@ -13,7 +13,8 @@ async createPost(body){
   async getPostsByProject(projectId){
     const res = await api.get('api/projects/'+projectId+ '/posts')
     logger.log('get posts', res.data)
-    AppState.posts = res.data
+    AppState.posts = res.data.posts
+    AppState.lockedPosts = res.data.locked
   }
 
   async deletePost(postId){
