@@ -32,7 +32,12 @@ class ProjectsService{
     if(project.creatorId.toString() != userId){
       throw new BadRequest("you don't have permission to delete that project")
     }
-    return `deleted project ${project.name}`
+    // NOTE write delete many later
+    await dbContext.Posts.deleteMany({projectId: id})
+    await dbContext.Tiers.deleteMany({projectId: id})
+    await dbContext.Supports.deleteMany({projectId: id})
+    await project.remove()
+    return `deleted project ${project.name}, and all of it's data`
   }
 
 }

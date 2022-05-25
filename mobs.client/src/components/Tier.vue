@@ -22,6 +22,7 @@ import { supportsService } from '../services/SupportsService';
 import Pop from '../utils/Pop';
 import { useRoute } from 'vue-router';
 import { tiersService } from "../services/TiersService";
+import { logger } from '../utils/Logger';
 export default {
   props: { tier: { type: Object, required: true } },
   setup(props) {
@@ -31,14 +32,24 @@ export default {
       hasTier: computed(() => AppState.supportedProjects.find(p => p.tierId == props.tier.id)),
       async supportProject() {
         try {
-          if (await Pop.confirm('Do want to support this creator?', '$ ' + props.tier.cost, 'question', 'yes support!')) {
-            let support = {
-              projectId: route.params.id,
-              accountId: AppState.account.id,
-              tierId: props.tier.id
+          // are you a supporter already
+          let support = AppState.supportedProjects.find(s => s.projectId == route.params.id)
+          if (!support) {
+            if (await Pop.confirm('Do want to support this creator?', '$ ' + props.tier.cost, 'question', 'yes support!')) {
+              let support = {
+                projectId: route.params.id,
+                accountId: AppState.account.id,
+                tierId: props.tier.id
+              }
+              await supportsService.create(support)
+              Pop.toast('Project supported!', 'success')
             }
-            await supportsService.create(support)
-            Pop.toast('Project supported!', 'success')
+          } else {
+            if (await Pop.confirm(`Update your support level from ${support.tier.name} : $${support.tier.cost}\n <i class="mdi mdi-arrow-down"></i> \n ${props.tier.name} : $${props.tier.cost}`, '', 'question', 'yes update!')) {
+              support.tierId = props.tier.id
+              await supportsService.update(support)
+              Pop.toast('Support updated!', 'success')
+            }
           }
         } catch (error) {
           Pop.error(error)
@@ -61,8 +72,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/main.scss";
-.supported {
-  border: 4px dashed $light;
+.tier.supported {
+  // border: 4px dashed $light;
+  background: lighten($success, 35);
+  color: darken($success, 10);
+  @include bigShadow($secondary, 0.8);
   &:before {
     content: "Your Tier";
     @include baloo(500);
@@ -70,11 +84,15 @@ export default {
     height: 1.5em;
     top: -0.9em;
     right: 25%;
-    background: $light;
-    color: $success;
+    background: $success;
+    color: $light;
     border-radius: inherit;
     position: absolute;
     z-index: 100;
+  }
+  h5 {
+    background: $success;
+    color: $light;
   }
 }
 .tier {
@@ -119,13 +137,15 @@ export default {
     width: 30px;
     position: absolute !important;
     bottom: -15px;
-    left: calc((50% -7.5px));
+    left: calc(44% + 1vw);
     text-align: center;
     border-radius: 50em;
     background: $success;
     border: 0;
     color: lighten($light, 10);
-    transition: background 0.1s ease-in;
+    transition: all 0.1s ease-in;
+    transform: translateY(-30px);
+    opacity: 0;
     &:hover {
       background: $danger;
     }

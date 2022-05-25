@@ -11,9 +11,8 @@ export class ProjectsController extends BasController{
       this.router
       .get('', this.getAll)
       .get('/:id', this.getById)
-      // TODO get tiers by project
-      // TODO get supports by project
       .get('/:id/tiers', this.getTiers)
+      // TODO get supports by project
       .get('/:id/supports', this.getSupporters)
       .use(Auth0Provider.getAuthorizedUserInfo)
       // TODO get posts by project

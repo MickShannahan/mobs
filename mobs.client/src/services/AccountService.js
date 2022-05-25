@@ -22,7 +22,7 @@ class AccountService {
   async getSupports(){
     try {
         const res = await api.get('/account/supports')
-        logger.log('[my supports]', res.data)
+        logger.log('[supported Projects]', res.data)
         AppState.supportedProjects = res.data
     } catch (error) {
       Pop.error(error)

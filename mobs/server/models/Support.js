@@ -3,24 +3,16 @@ const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 
 // TODO build for class
-
 export const SupportSchema = new Schema({
   accountId: {type: ObjectId, required: true, ref: 'Account'},
   tierId: {type: ObjectId, required: true, ref: 'Tier'},
-  projectId: {type: ObjectId, required: true, ref: 'Project'},
-  projectCreatorId: {type: ObjectId, ref: 'Account'}
+  projectId: {type: ObjectId, required: true, ref: 'Project'}
 },
 { timestamps: true, toJSON: { virtuals: true } })
 
+// TODO CREATE VIRTUAL FOR EACH
 SupportSchema.virtual('account',{
   localField: 'accountId',
-  foreignField: '_id',
-  ref: 'Account',
-  justOne: true
-})
-
-SupportSchema.virtual('projectCreator',{
-  localField: 'projectCreatorId',
   foreignField: '_id',
   ref: 'Account',
   justOne: true

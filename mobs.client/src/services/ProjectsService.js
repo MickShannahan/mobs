@@ -20,6 +20,12 @@ class ProjectsService{
     logger.log('[get project]', res.data)
     AppState.activeProject = res.data
   }
+
+  async editProject(body){
+    const res = await api.put('api/projects/'+ body.id, body)
+    logger.log('edit project', res.data)
+    AppState.activeProject = res.data
+  }
 }
 
 export const projectsService = new ProjectsService()

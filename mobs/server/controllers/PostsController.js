@@ -6,31 +6,11 @@ export class PostsController extends BasController{
     constructor(){
       super('api/posts')
       this.router
-      // .get('', this.getAll)
-      // .get('/:id', this.getById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
       .put('/:id', this.update)
       .delete('/:id', this.delete)
     }
-
-    // async getAll(req, res, next){
-    //   try {
-    //     const posts = await postsService.getAll(req.query)
-    //     return res.send(posts)
-    //   } catch (error) {
-    //     next(error)
-    //   }
-    // }
-
-    // async getById(req, res, next){
-    //   try {
-    //     const post = await postsService.getById(req.params.id)
-    //     return res.send(post)
-    //   } catch (error) {
-    //     next(error)
-    //   }
-    // }
 
     async create(req, res, next){
       try {

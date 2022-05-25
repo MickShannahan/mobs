@@ -10,7 +10,7 @@ class SupportsService{
     return supporters
   }
 
-  // TODO GET PROJECTS/TIER INFO A PERSON IS SUPPORTING
+  // TODO GET PROJECTS A PERSON IS SUPPORTING
   async getMySupports(accountId){
     const supports = await dbContext.Supports.find({accountId}).populate('project').populate('tier')
     return supports
@@ -30,7 +30,7 @@ class SupportsService{
     return support
   }
 
-  // TODO A FIND ONE TO FIND ONE BY ACCOUNT AND PROJECT
+  // TODO A FIND ONE BY ACCOUNT AND PROJECT
   async getAccountProjectSupport(accountId, projectId){
     let tier = await dbContext.Supports.findOne({accountId, projectId}).populate('tier')
     return tier

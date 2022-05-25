@@ -19,6 +19,11 @@ class SupportsService{
     AppState.supporters = res.data
   }
 
+  async update(updatedSupport){
+    const res = await api.put('api/supports/'+updatedSupport.id, updatedSupport)
+    logger.log('updated support level', res.data)
+  }
+
   async deleteSupport(id){
     const res = await api.delete('api/supports/' + id)
     logger.log('deleting support', res.data)

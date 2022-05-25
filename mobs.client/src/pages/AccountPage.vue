@@ -11,26 +11,29 @@
       <h5>Your Projects</h5>
       <div id="projects-container">
         <div v-for="p in projects" :key="p.id">
-          <router-link :to="{name: 'ProjectDetails', params:{id: p.id}}">
-          {{ p.name }}
+          <router-link :to="{ name: 'ProjectDetails', params: { id: p.id } }">
+            {{ p.name }}
           </router-link>
         </div>
       </div>
-      <button
-      data-bs-toggle="modal"
-      data-bs-target="#create-project"
-      ><i class="mdi mdi-plus"></i></button>
+      <button data-bs-toggle="modal" data-bs-target="#create-project">
+        <i class="mdi mdi-plus"></i>
+      </button>
     </section>
     <section id="supported-projects">
       <h5>Projects you support</h5>
       <div id="supports-container">
-        <SupportedProject v-for="s in supportedProjects" :key="s.id" :support="s" />
+        <SupportedProject
+          v-for="s in supportedProjects"
+          :key="s.id"
+          :support="s"
+        />
       </div>
     </section>
   </div>
   <Modal id="create-project">
     <template #header>Create a Project</template>
-    <template #body><CreateProject/></template>
+    <template #body><ProjectForm /></template>
   </Modal>
 </template>
 
@@ -124,7 +127,7 @@ export default {
       @include bigShadow($secondary, 0.5);
       transition: all 0.1s ease;
       @include selectable();
-      a{
+      a {
         color: lighten($light, 20);
       }
     }
@@ -168,7 +171,6 @@ export default {
     flex-direction: column;
     padding: 1em;
     // Support item
-
   }
 }
 </style>

@@ -9,7 +9,7 @@ class PostsService{
   // TODO GET POSTS FOR ONLY THAT USERS SUPPORT LEVEL AND LOWER
   async getProjectPosts(projectId, userId){
     const project = await projectsService.getById(projectId)
-    const posts = await dbContext.Posts.find({projectId}).populate('tier')
+    const posts = await dbContext.Posts.find({projectId}).sort({createdAt: -1}).populate('tier')
     // if creator return all posts
     if(project.creatorId.toString() == userId){
       return posts
@@ -25,6 +25,7 @@ class PostsService{
     })
     return filtered
   }
+
   async create(body) {
     let post = await dbContext.Posts.create(body)
     await post.populate('creator', 'name picture')

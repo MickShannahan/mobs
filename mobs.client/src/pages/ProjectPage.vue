@@ -8,8 +8,19 @@
         <p v-if="project.createdAt">
           funded since {{ formatDate(project.createdAt) }}
         </p>
+        <button
+          v-if="account.id == project.creatorId"
+          data-bs-toggle="modal"
+          data-bs-target="#edit-project"
+        >
+          <i class="mdi mdi-pencil"></i> edit
+        </button>
       </div>
       <Supporters />
+      <Modal id="edit-project">
+        <template #header>edit a Project</template>
+        <template #body><ProjectForm :project="project" /></template>
+      </Modal>
     </section>
     <!-- TIERS CONTAINER -->
     <section id="tiers-container">
@@ -17,28 +28,32 @@
       <div class="tiers">
         <Tier v-for="t in tiers" :key="t.id" :tier="t" />
       </div>
-      <button v-if="project.creatorId == account.id"
-      data-bs-toggle="modal"
-      data-bs-target="#create-tier">
-      <i class="mdi mdi-plus"></i>
+      <button
+        v-if="project.creatorId == account.id"
+        data-bs-toggle="modal"
+        data-bs-target="#create-tier"
+      >
+        <i class="mdi mdi-plus"></i>
       </button>
       <Modal id="create-tier">
         <template #header>Create Tier</template>
-        <template #body><CreateTier/> </template>
+        <template #body><CreateTier /> </template>
       </Modal>
     </section>
     <!-- POSTS CONTAINER -->
     <section id="posts-container">
       <!-- CREATE POST -->
       <CreatePost v-if="project.creatorId == account.id" />
-      <div  class="tier-filter">
+      <div class="tier-filter">
         <div>filter posts by:</div>
         <button @click="filterTier = ''">all</button>
-        <button v-for="t in tiers" :key="t.id" @click="filterTier = t.id">{{ t.name }}</button>
+        <button v-for="t in tiers" :key="t.id" @click="filterTier = t.id">
+          {{ t.name }}
+        </button>
       </div>
-      <div  id="posts">
+      <div id="posts">
         <Post v-for="p in posts" :key="p.id" :post="p" />
-        <div v-if="posts.length <= 0 ">No Posts to show</div>
+        <div v-if="posts.length <= 0">No Posts to show</div>
         <div v-if="!isSupporter && project.creatorId != account.id">
           please support this creator to see their posts
           <i class="mdi mdi-lock"></i>
@@ -80,7 +95,7 @@ export default {
     return {
       filterTier,
       project: computed(() => AppState.activeProject),
-      tiers: computed(() => AppState.tiers.sort((a,b) => a.cost - b.cost)),
+      tiers: computed(() => AppState.tiers.sort((a, b) => a.cost - b.cost)),
       // NOTE filters by tier id only IF there is a filter value, if there is not it returns all
       posts: computed(() => AppState.posts.filter(p => filterTier.value ? p.tierId == filterTier.value : true)),
       isSupporter: computed(() => AppState.supportedProjects.find(p => AppState.activeProject.id == p.projectId)),
@@ -130,7 +145,18 @@ export default {
       }
       p {
         font-size: 16px;
+        margin: 0px;
       }
+    }
+    button {
+      height: unset;
+      border: 0;
+      border-radius: 8px;
+      padding: 1em 1em;
+      background: transparent;
+      color: lighten($light, 10);
+      transition: all 0.1s ease;
+      @include selectable();
     }
   }
   #tiers-container {
@@ -160,7 +186,7 @@ export default {
       justify-content: space-around;
       width: 100%;
     }
-    button{
+    button {
       height: 45px;
       width: 45px;
       position: absolute !important;
@@ -170,7 +196,7 @@ export default {
       border: 0;
       background: $success;
       color: $light;
-      @include bigShadow($success, .5);
+      @include bigShadow($success, 0.5);
       @include selectable();
     }
   }

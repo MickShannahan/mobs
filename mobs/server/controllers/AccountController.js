@@ -11,6 +11,7 @@ export class AccountController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getUserAccount)
       .get('/projects', this.getProjects)
+      // TODO Get Account Supports
       .get('/supports', this.getSupportingProjects)
   }
 
