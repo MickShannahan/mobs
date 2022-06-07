@@ -1,17 +1,5 @@
 <template>
-  <div class="tier" :class="{ supported: hasTier }" @click="supportProject">
-    <div>
-      <h6>{{ tier.name }}</h6>
-      <h5>${{ tier.cost }}</h5>
-    </div>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi
-      laborum minima maxime nobis reiciendis recusandae consequuntur.
-    </p>
-    <button v-if="tier.creatorId == account.id" @click.stop="deleteTier">
-      <i class="mdi mdi-close"></i>
-    </button>
-  </div>
+  <div class="tier"></div>
 </template>
 
 
@@ -24,48 +12,7 @@ import { useRoute } from 'vue-router';
 import { tiersService } from "../services/TiersService";
 import { logger } from '../utils/Logger';
 export default {
-  props: { tier: { type: Object, required: true } },
-  setup(props) {
-    const route = useRoute()
-    return {
-      account: computed(() => AppState.account),
-      hasTier: computed(() => AppState.supportedProjects.find(p => p.tierId == props.tier.id)),
-      async supportProject() {
-        try {
-          // are you a supporter already
-          let support = AppState.supportedProjects.find(s => s.projectId == route.params.id)
-          if (!support) {
-            if (await Pop.confirm('Do want to support this creator?', '$ ' + props.tier.cost, 'question', 'yes support!')) {
-              let support = {
-                projectId: route.params.id,
-                accountId: AppState.account.id,
-                tierId: props.tier.id
-              }
-              await supportsService.create(support)
-              Pop.toast('Project supported!', 'success')
-            }
-          } else {
-            if (await Pop.confirm(`${support.tier.name} : $${support.tier.cost}\n <i class="mdi mdi-arrow-down"></i> \n ${props.tier.name} : $${props.tier.cost}`, 'Update Support Tier?', 'question', 'yes update!')) {
-              support.tierId = props.tier.id
-              await supportsService.update(support)
-              Pop.toast('Support updated!', 'success')
-            }
-          }
-        } catch (error) {
-          Pop.error(error)
-        }
-      },
-      async deleteTier() {
-        try {
-          if (await Pop.confirm()) {
-            await tiersService.deleteTier(props.tier.id)
-          }
-        } catch (error) {
-          Pop.error(error)
-        }
-      }
-    }
-  }
+
 };
 </script>
 

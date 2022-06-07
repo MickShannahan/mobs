@@ -4,11 +4,6 @@ import { api } from "./AxiosService"
 
 
 class TiersService{
-  async getTiersByProject(projectId){
-    const res = await api.get('api/projects/'+projectId+'/tiers')
-    logger.log('get Tiers', res.data)
-    AppState.tiers = res.data
-  }
 
   async createTier(body){
     const res = await api.post('api/tiers', body)

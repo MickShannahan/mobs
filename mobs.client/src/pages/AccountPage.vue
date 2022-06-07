@@ -20,16 +20,7 @@
         <i class="mdi mdi-plus"></i>
       </button>
     </section>
-    <section id="supported-projects">
-      <h5>Projects you support</h5>
-      <div id="supports-container">
-        <SupportedProject
-          v-for="s in supportedProjects"
-          :key="s.id"
-          :support="s"
-        />
-      </div>
-    </section>
+    <section id="supported-projects"></section>
   </div>
   <Modal id="create-project">
     <template #header>Create a Project</template>
@@ -54,7 +45,6 @@ export default {
       account: computed(() => AppState.account),
       projects: computed(() => AppState.accountProjects),
       // reuse from auth service
-      supportedProjects: computed(() => AppState.supportedProjects),
 
     }
   }

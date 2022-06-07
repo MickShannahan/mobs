@@ -1,30 +1,5 @@
 <template>
-  <div class="supporters">
-    <!-- Button -->
-    <button data-bs-toggle="offcanvas" data-bs-target="#supporters-canvas">
-      see supporters
-    </button>
-    <!-- Offcanvas  copy first from BS5 DOCS (https://getbootstrap.com/docs/5.0/components/offcanvas/) change offcanvas-start to offcanvas-end -->
-    <div
-      class="offcanvas offcanvas-end"
-      tabindex="-1"
-      id="supporters-canvas"
-      aria-labelledby="offcanvasLabel"
-    >
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasLabel">Supporters</h5>
-        <button
-          type="button"
-          class="btn-close text-reset"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <SupporterTier v-for="t in tiers" :key="t.id" :tier="t" />
-      </div>
-    </div>
-  </div>
+  <div class="supporters"></div>
 </template>
 
 
@@ -36,17 +11,7 @@ import { supportsService } from '../services/SupportsService';
 import { useRoute } from 'vue-router';
 export default {
   setup() {
-    const route = useRoute()
-    onMounted(async () => {
-      try {
-        await supportsService.getProjectSupporters(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-      }
-    })
-    return {
-      tiers: computed(() => AppState.tiers)
-    }
+
   }
 };
 </script>

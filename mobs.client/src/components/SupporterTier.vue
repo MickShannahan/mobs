@@ -1,24 +1,10 @@
-<template>
-  <div class="supporter-tier">
-    <h5>{{ tier.name }}</h5>
-    <div v-for="s in supporters" :key="s.id">
-      <img :src="s.account.picture" alt="" />
-      <p>{{ s.account.name }}</p>
-    </div>
-  </div>
-</template>
+<template></template>
 
 
 <script>
-import { AppState } from '../AppState';
-import { computed, reactive, onMounted } from 'vue';
+
 export default {
-  props: { tier: { type: Object, required: true } },
-  setup(props) {
-    return {
-      supporters: computed(() => AppState.supporters.filter(s => s.tierId == props.tier.id))
-    }
-  }
+
 };
 </script>
 
