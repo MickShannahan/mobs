@@ -1,5 +1,8 @@
 <template>
-  <div class="tier"></div>
+  <div class="tier">
+    <h5>{{ tier.name }}</h5>
+    <h6>{{ tier.cost }}</h6>
+  </div>
 </template>
 
 
@@ -12,7 +15,10 @@ import { useRoute } from 'vue-router';
 import { tiersService } from "../services/TiersService";
 import { logger } from '../utils/Logger';
 export default {
+  props: { tier: { type: Object, required: true } },
+  setup() {
 
+  }
 };
 </script>
 

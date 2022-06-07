@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent px-4 ">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent px-4">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <h2>Mobs</h2>
@@ -20,6 +20,16 @@
       class="collapse navbar-collapse d-flex justify-content-end"
       id="navbarText"
     >
+      <button
+        v-if="account.id"
+        data-bs-toggle="modal"
+        data-bs-target="#create-project"
+      >
+        create Project
+      </button>
+      <Modal id="create-project">
+        <template #body><ProjectForm /> </template>
+      </Modal>
       <!-- LOGIN COMPONENT HERE -->
       <Login />
     </div>
@@ -27,9 +37,13 @@
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { AppState } from '../AppState';
 export default {
   setup() {
-    return {};
+    return {
+      account: computed(() => AppState.account)
+    };
   },
 };
 </script>

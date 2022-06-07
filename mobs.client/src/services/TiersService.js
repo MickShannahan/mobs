@@ -16,6 +16,12 @@ class TiersService{
     logger.log('delete tier', res.data)
     AppState.tiers = AppState.tiers.filter(t => t.id != id)
   }
+
+  async getByProjectId(projectId){
+    const res = await api.get(`api/projects/${projectId}/tiers`)
+    logger.log('-getTiersByProjectId-', res.data)
+    AppState.tiers = res.data
+  }
 }
 
 export const tiersService = new TiersService()

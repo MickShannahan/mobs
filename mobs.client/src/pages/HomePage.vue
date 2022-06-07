@@ -1,13 +1,36 @@
 <template>
-  <div class="home container"></div>
+  <div class="home container">
+    <div>some sort of header</div>
+    <div class="row">
+      projects
+      <div v-for="p in projects" :key="p.id" class="col-12">
+        <Project :project="p" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { computed, onMounted } from '@vue/runtime-core'
+import Pop from '../utils/Pop'
+import { logger } from '../utils/Logger'
+import { projectsService } from '../services/ProjectsService'
+import { AppState } from '../AppState'
 
 export default {
   name: 'Home',
   setup() {
-
+    onMounted(async () => {
+      try {
+        await projectsService.getAll()
+      } catch (error) {
+        Pop.toast(error.message)
+        logger.log(error)
+      }
+    })
+    return {
+      projects: computed(() => AppState.projects)
+    }
   }
 }
 </script>

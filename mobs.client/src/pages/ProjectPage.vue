@@ -1,15 +1,46 @@
 <template>
   <div class="project-page">
     <!-- PROJECT DETAILS -->
+    <section id="project">
+      <img :src="project.img" alt="" />
+      <div>
+        <h4>{{ project.name }}</h4>
+      </div>
+    </section>
+    <section id="tiers-container">
+      <h5>tiers</h5>
+      <div class="tiers">
+        <Tier v-for="t in tiers" :key="t.id" :tier="t" />
+      </div>
+    </section>
   </div>
 </template>
 
 
 <script>
+import { computed, onMounted } from '@vue/runtime-core';
+import { projectsService } from '../services/ProjectsService';
+import { tiersService } from '../services/TiersService';
+import { useRoute } from 'vue-router';
+import Pop from '../utils/Pop';
+import { AppState } from '../AppState';
 
 export default {
   setup() {
-
+    const route = useRoute()
+    onMounted(async () => {
+      try {
+        await projectsService.getById(route.params.id)
+        await tiersService.getByProjectId(route.params.id)
+      } catch (error) {
+        Pop.toast(error.message, 'error')
+        logger.log(error)
+      }
+    })
+    return {
+      project: computed(() => AppState.activeProject),
+      tiers: computed(() => AppState.tiers)
+    }
   }
 };
 </script>

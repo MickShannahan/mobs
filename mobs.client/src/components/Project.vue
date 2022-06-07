@@ -1,5 +1,5 @@
 <template>
-  <div class="project-card" @click="selectProject"></div>
+  <div class="project-card" @click="goToProject">{{ project.name }}</div>
 </template>
 
 
@@ -8,6 +8,16 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 export default {
+  props: { project: { type: Object, required: true } },
+  setup(props) {
+    const router = useRouter()
+    return {
+      goToProject() {
+        router.push({ name: 'ProjectDetails', params: { id: props.project.id } })
+      }
+    }
+
+  }
 
 };
 </script>
