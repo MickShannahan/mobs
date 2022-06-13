@@ -24,9 +24,4 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
-#app {
-  background-color: $light;
-  background-image: url("./assets/img/MobsBg.png");
-  background-repeat: no-repeat;
-}
 </style>

@@ -5,6 +5,12 @@
 @import "./loaders.scss";
 @import url('https://fonts.googleapis.com/css2?family=Alata&family=Baloo+2:wght@400;500;600;700;800&display=swap');
 
+#app {
+  background-color: $light;
+  background-image: url("./assets/img/MobsBg.png");
+  background-repeat: no-repeat;
+}
+
 
 @mixin baloo($weight: 400) {
   font-family: 'Baloo 2', cursive;
