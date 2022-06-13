@@ -49,22 +49,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/main.scss";
-.navbar {
-  h2 {
-    @include baloo(800);
-  }
-}
-
-a:hover {
-  text-decoration: none;
-}
-.nav-link {
-  text-transform: uppercase;
-}
-.navbar-nav .router-link-exact-active {
-  border-bottom: 2px solid var(--bs-success);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
+@import "../assets/scss/_navbar.scss";
 </style>

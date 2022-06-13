@@ -19,13 +19,22 @@
       <button data-bs-toggle="modal" data-bs-target="#create-project">
         <i class="mdi mdi-plus"></i>
       </button>
+      <Modal id="create-project">
+        <template #header>Create a Project</template>
+        <template #body><ProjectForm /></template>
+      </Modal>
     </section>
-    <section id="supported-projects"></section>
+    <section id="supported-projects">
+      <h5>Projects you support</h5>
+      <div class="supports-container">
+        <SupportedProject
+          v-for="sp in supportedProjects"
+          :key="sp.id"
+          :support="sp"
+        />
+      </div>
+    </section>
   </div>
-  <Modal id="create-project">
-    <template #header>Create a Project</template>
-    <template #body><ProjectForm /></template>
-  </Modal>
 </template>
 
 <script>
@@ -45,6 +54,7 @@ export default {
       account: computed(() => AppState.account),
       projects: computed(() => AppState.accountProjects),
       // reuse from auth service
+      supportedProjects: computed(() => AppState.supportedProjects)
 
     }
   }
@@ -52,115 +62,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/main.scss";
-.account-page {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-#account-details {
-  display: flex;
-  width: 100%;
-  justify-content: end;
-  padding: 2em 5em 0em 5vw;
-  margin-right: 5em;
-  & > div {
-    font-size: 18px;
-    text-align: right;
-    font-weight: 500;
-    margin-right: 1em;
-    padding-top: 5em;
-  }
-  img {
-    transform: translateY(2em);
-    position: relative;
-    z-index: 100;
-    width: 200px;
-    height: 200px;
-    object-position: center;
-    object-fit: cover;
-    border-radius: 12px;
-    @include bigShadow($dark, 0.7);
-  }
-}
-#account-projects {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  border-radius: 12px;
-  text-align: center;
-  @include bigShadow($dark, 0.7);
-  position: relative;
-  background: lighten($warning, 42);
-  min-height: 5vh;
-  padding: 1em 2em 2em 2em;
-  margin: 0em 3em;
-  h5 {
-    @include baloo(700);
-    color: $secondary;
-    margin-bottom: 1em;
-  }
-  #projects-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    // project
-    div {
-      background: $secondary;
-      padding: 1em 2.5em;
-      border-radius: 12px;
-      margin: 1em;
-      @include bigShadow($secondary, 0.5);
-      transition: all 0.1s ease;
-      @include selectable();
-      a {
-        color: lighten($light, 20);
-      }
-    }
-  }
-  // add project button
-  button {
-    position: absolute !important;
-    top: 1rem;
-    right: 1rem;
-    height: 50px;
-    width: 50px;
-    background: $secondary;
-    color: lighten($light, 20);
-    font-size: 20px;
-    border: 0px;
-    border-radius: 50em;
-    @include bigShadow($secondary, 0.6);
-    @include selectable();
-  }
-}
-#supported-projects {
-  display: flex;
-  flex-direction: column;
-  width: 75%;
-  margin: 3rem auto;
-  border-radius: 12px;
-  @include bigShadow($dark, 0.7);
-  background: desaturate(lighten($warning, 38), 35%);
-  h5 {
-    background: $secondary;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-    text-align: center;
-    padding: 1.75rem;
-    @include baloo(500);
-    color: lighten($light, 20);
-  }
-
-  #supports-container {
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    // Support item
-  }
-}
+@import "../assets/scss/_accountPage.scss";
 </style>

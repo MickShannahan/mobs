@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { AccountSchema, ProfileSchema } from '../models/Account';
 import { PostSchema } from '../models/Post';
 import { ProjectSchema } from '../models/Project';
+import { SupportSchema } from '../models/Support';
 import { TierSchema } from '../models/Tier';
 
 class DbContext {
@@ -11,7 +12,7 @@ class DbContext {
   Projects = mongoose.model('Project', ProjectSchema)
   Posts = mongoose.model('Post', PostSchema)
   Tiers = mongoose.model('Tier', TierSchema)
-  // Supports = mongoose.model('Support', SupportSchema)
-}
+  Supports = mongoose.model('Support', SupportSchema)
 
+}
 export const dbContext = new DbContext()

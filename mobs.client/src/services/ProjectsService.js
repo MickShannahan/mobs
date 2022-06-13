@@ -21,6 +21,12 @@ class ProjectsService{
     AppState.accountProjects.push(res.data)
   }
 
+  async updateProject(update){
+    const res = await api.put('api/projects/'+ update.id, update)
+    logger.log('-updatedProject', res.data)
+    AppState.activeProject = res.data
+  }
+
 }
 
 export const projectsService = new ProjectsService()

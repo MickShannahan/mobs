@@ -1,5 +1,6 @@
 import { Auth0Provider } from '@bcwdev/auth0provider';
 import { projectsService } from '../services/ProjectsService';
+import { supportsService } from '../services/SupportsService';
 import { tiersService } from '../services/TiersService';
 import BasController from '../utils/BaseController';
 
@@ -13,6 +14,7 @@ export class ProjectsController extends BasController{
       //TODO get tiers
       .get('/:id/tiers', this.getTiers)
       // TODO get supporters
+      .get('/:id/supports', this.getSupporters)
       // TODO get posts
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
@@ -42,6 +44,15 @@ export class ProjectsController extends BasController{
       try {
         let tiers = await tiersService.getByProjectId(req.params.id)
         return res.send(tiers)
+      } catch (error) {
+        next(error)
+      }
+    }
+
+    async getSupporters(req, res, next){
+      try {
+        let supporters = await supportsService.getAll({projectId: req.params.id})
+        return res.send(supporters)
       } catch (error) {
         next(error)
       }
