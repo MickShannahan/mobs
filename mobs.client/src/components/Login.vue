@@ -66,4 +66,5 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "../assets/scss/_login.scss";
 </style>
