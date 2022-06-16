@@ -46,5 +46,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../assets/sccs/_homePage.scss";
+@import "../assets/scss/_homePage.scss";
 </style>
