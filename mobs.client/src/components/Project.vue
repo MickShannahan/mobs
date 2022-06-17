@@ -1,5 +1,5 @@
 <template>
-  <div class="project-card" @click="selectProject"></div>
+  <div class="project-card"></div>
 </template>
 
 
