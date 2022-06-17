@@ -8,7 +8,6 @@ export class TiersController extends BasController{
       this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
-      .put('/:id', this.update)
       .delete('/:id', this.delete)
     }
 
@@ -24,15 +23,7 @@ export class TiersController extends BasController{
       }
     }
 
-    async update(req, res, next){
-      try {
-        req.body.creatorId = req.userInfo.id
-        const tier = await tiersService.update(req.params.id, req.body)
-        return res.send(tier)
-      } catch (error) {
-        next(error)
-      }
-    }
+
 
     async delete(req, res, next){
       try {

@@ -12,7 +12,6 @@ export class AccountController extends BaseController {
       .get('', this.getUserAccount)
       .get('/projects', this.getProjects)
       // TODO Get Account Supports
-      .get('/supports', this.getSupportingProjects)
   }
 
   async getUserAccount(req, res, next) {

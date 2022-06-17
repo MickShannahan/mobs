@@ -13,7 +13,6 @@ export class ProjectsController extends BasController{
       .get('/:id', this.getById)
       .get('/:id/tiers', this.getTiers)
       // TODO get supports by project
-      .get('/:id/supports', this.getSupporters)
       .use(Auth0Provider.getAuthorizedUserInfo)
       // TODO get posts by project
       .get('/:id/posts', this.getPosts)

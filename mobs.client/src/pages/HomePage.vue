@@ -43,29 +43,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../assets/scss/main.scss";
-.home {
-}
-
-.hero-banner {
-  position: relative;
-  @include baloo(600);
-  @include bigShadow($warning);
-  background: $warning;
-  padding: 3em 5em;
-  margin-bottom: 4.5em;
-  p {
-    color: darken($warning, 30);
-    position: absolute;
-    bottom: -0.5em;
-    right: 1.5em;
-  }
-}
-
-.projects-row {
-  background: lighten($warning, 35);
-  @include bigShadow($dark, 0.8);
-  padding: 1em;
-  border-radius: 8px;
-}
+@import "../assets/scss/_homePage.scss";
 </style>

@@ -25,10 +25,7 @@
           <span class="mx-3 text-dark lighten-30">{{ account.name }}</span>
         </div>
       </div>
-      <div
-        class="dropdown-menu list-group"
-        aria-labelledby="authDropdown"
-      >
+      <div class="dropdown-menu list-group" aria-labelledby="authDropdown">
         <router-link :to="{ name: 'Account' }">
           <div class="list-group-item list-group-item-action hoverable">
             Manage Account
@@ -69,27 +66,5 @@ export default {
 
 
 <style lang="scss" scoped>
-.dropdown{
-  margin-right: calc(2vw + 1em);
-}
-.dropdown-menu {
-  position: absolute;
-  top: 0%;
-  left: -1em;
-  padding: 0 0px;
-  user-select: none;
-  transform: scaleY(0);
-  transition: all 0.1s ease;
-  opacity: 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.dropdown-menu.show {
-  transform: scaleY(1);
-  top: 100%;
-  opacity: 1;
-}
-.hoverable {
-  cursor: pointer;
-}
+@import "../assets/scss/_login.scss";
 </style>
